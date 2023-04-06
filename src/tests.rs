@@ -59,5 +59,5 @@ fn test_montant_capital() {
 
 #[test]
 fn test_interet() {
-    assert_eq!(interet(80000.0, 7.0, 5), 5600.0);
+    assert_eq!(interet(80000.0, 7.0, 5,1), 5600.0);
 }
