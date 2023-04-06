@@ -1,8 +1,4 @@
-use crate::{
-    annuite_remboursement, calcul_capital, capital_rembourse, capital_rembourse_annuite, duree,
-    interet_simple, montant_capital, placement_mensuel, taux_mensuel, valeur_acquise,
-    valeur_actuelle,
-};
+use crate::{annuite_remboursement, calcul_capital, capital_rembourse, capital_rembourse_annuite, duree, interet, interet_simple, montant_capital, placement_mensuel, taux_mensuel, valeur_acquise, valeur_actuelle};
 
 #[test]
 fn test_valeur_acquise() {
@@ -59,4 +55,9 @@ fn test_amortissement_annuite() {
 #[test]
 fn test_montant_capital() {
     assert_eq!(montant_capital(80000.0, 7.0, 5), 61763.0);
+}
+
+#[test]
+fn test_interet() {
+    assert_eq!(interet(80000.0, 7.0, 5), 5600.0);
 }

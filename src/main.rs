@@ -1,7 +1,6 @@
 mod tests;
 
 
-
 fn valeur_acquise(montant: u16, taux: u16, duree: u8) -> f32 {
     let taux_decimal = taux as f32 / 100.0;
     let facteur_actualisation = (1.0 + taux_decimal).powf(duree as f32);
@@ -56,29 +55,29 @@ fn taux_mensuel(taux: f32) -> f32 {
     return result;
 }
 
-fn annuite_remboursement(nominal: f32, taux: f32, duree: i8) -> f32 {
+fn annuite_remboursement(nominal: f32, taux: f32, duree: i16) -> f32 {
     let taux_decimal = 1.0 + taux / 100.0;
     let denominateur = 1.0 - (taux_decimal).powf(duree as f32 * -1.0);
     let resultat = (nominal * (taux as f32 / 100.0)) / denominateur;
     return resultat;
 }
 
-fn capital_rembourse(nominal: f32, taux: f32, duree: i8) -> f32 {
+fn capital_rembourse(nominal: f32, taux: f32, duree: i16) -> f32 {
     let taux_decimal = 1.0 + taux / 100.0;
     let annuite = annuite_remboursement(nominal, taux, duree);
     let resultat = annuite * (taux_decimal).powf(duree as f32 * -1.0);
     return resultat;
 }
 
-fn capital_rembourse_annuite(nominal: f32, taux: f32, duree: i8, annuite: i8) -> f32 {
+fn capital_rembourse_annuite(nominal: f32, taux: f32, duree: i16, annuite: i16) -> f32 {
     let taux_decimal = 1.0 + taux / 100.0;
     let capital = capital_rembourse(nominal, taux, duree);
     let resultat = capital * taux_decimal.powf((annuite - 1) as f32);
     return resultat;
 }
 
-fn montant_capital(nominal: f32, taux: f32, duree: i8) -> f32 {
-    let mut x: i8 = 1;
+fn montant_capital(nominal: f32, taux: f32, duree: i16) -> f32 {
+    let mut x: i16 = 1;
     let mut capital = 0;
     while x < duree {
         capital = capital + capital_rembourse_annuite(nominal, taux, duree, x) as i32;
@@ -87,6 +86,36 @@ fn montant_capital(nominal: f32, taux: f32, duree: i8) -> f32 {
     return capital as f32;
 }
 
-fn main() {
+fn interet(nominal: f32, taux: f32, duree: i16, periode: i16) -> f32 {
+    return annuite_remboursement(nominal, taux, duree) - capital_rembourse_annuite(nominal, taux, duree, periode);
+}
 
+fn restantdu(nominal: f32, taux: f32, duree: i16, periode: i16) -> f32 {
+    let mut total: f32 = nominal;
+    let mut i = 1;
+    loop {
+        if i >= periode { return total; }
+        total = total - capital_rembourse_annuite(nominal, taux, duree, i);
+        i = i + 1;
+    }
+    return total;
+}
+
+fn emprunt(nominal: f32, taux: f32, duree: i16, periode: i16) -> f32 {
+    println!("{} {} {} {} {}", restantdu(nominal, taux, duree, periode), interet(nominal, taux, duree, periode), capital_rembourse_annuite(nominal, taux, duree, periode), annuite_remboursement(nominal, taux, duree),annuite_remboursement(nominal, taux, duree)/12.0);
+    return 0 as f32;
+}
+
+fn main() {
+    let mut i:i16 = 1;
+    let duree:i16 = 240;
+    let taux= 1.0;
+    let nominal = 300000;
+    loop {
+        let result:f32 = emprunt(250000.0, taux, duree, i);
+        if (i == duree) {
+            break;
+        }
+        i = i + 1;
+    }
 }
